@@ -1,0 +1,8 @@
+Passos:
+ 1. Criar uma janela.
+  1.1 Criar divisões na janela.
+  1.2 Criar a divisão do upload, das sugestões e da integração com I.a
+
+2. Criar um botão.
+  2.1 Botão "upload"
+  2.2 Fazer o botão funcionar

@@ -1,45 +1,39 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Drawing.Drawing2D;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
+
 
 namespace Lens_inteligente;
 
 partial class Form1
 {
-    /// <summary>
-    ///  Required designer variable.
-    /// </summary>
     private System.ComponentModel.IContainer components = null;
-
-    /// <summary>
-    ///  Clean up any resources being used.
-    /// </summary>
-    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        
     protected override void Dispose(bool disposing)
     {
-        if (disposing && (components != null))
+        if(disposing && (components != null))
         {
             components.Dispose();
         }
         base.Dispose(disposing);
     }
+    
 
     #region Windows Form Designer generated code
-
-    /// <summary>
-    ///  Required method for Designer support - do not modify
-    ///  the contents of this method with the code editor.
-    /// </summary>
     private void InitializeComponent()
     {
-
         components = new System.ComponentModel.Container();
         AutoScaleMode = AutoScaleMode.Font;
+        AutoScaleDimensions = AutoScaleDimensions;
         ClientSize = new Size(800, 450);
         Text = "I.A - Len";
         this.BackColor = Color.Black;
     }
-     
+
     private void CreatMyLabel()
     {
         Label label1 = new Label();        //Janela inteira
@@ -101,8 +95,7 @@ partial class Form1
 
     private void Button1()
     {
-
-        Button button1 = new Button();  
+        Button button1 = new Button();
 
         button1.Text = "Upload";
         
@@ -111,11 +104,19 @@ partial class Form1
         button1.Location = new Point(450, 472);
         this.Controls.Add(button1);
 
-        button1.BringToFront();
+        button1.BringToFront();    
 
-        button1.Click += (sender, e) => 
+        Button1Click(button1);
+    }
+
+    private void Button1Click(Button buttonevent)
+    {
+        buttonevent.Click += (sender, e) => 
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
 
             TextBox textBox1 = new TextBox
             {
@@ -126,14 +127,59 @@ partial class Form1
             };
             textBox1.BackColor = Color.FromArgb(255, 20, 24, 33);
             ClientSize = new Size(330, 360);
-            Controls.Add(button1);
+            Controls.Add(buttonevent);
             Controls.Add(textBox1);
 
+            openFileDialog1.InitialDirectory = "c:\\";
+            openFileDialog1.Filter = "png files (*.png)|*.png|All files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 2;
+            openFileDialog1.RestoreDirectory = true;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                
+                filePath = openFileDialog1.FileName;
+
+               
+                var fileStream = openFileDialog1.OpenFile();
+
+                using (StreamReader reader = new StreamReader(fileStream))
+                {
+                    fileContent = reader.ReadToEnd();
+                }
+                
+            }
+
             textBox1.BringToFront();
+            eventimage(openFileDialog1, filePath);
+           
         };
 
     }
 
+    private Bitmap MyImage ;
+    public void ShowMyImage(String fileToDisplay, int xSize, int ySize)
+    {
+        PictureBox pictureBox1 = new PictureBox();
+        if (MyImage != null)
+        {
+            MyImage.Dispose();
+        }    
+        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage ;
+        MyImage = new Bitmap(fileToDisplay);
+        pictureBox1.ClientSize = new Size(xSize, ySize);
+        pictureBox1.Image = (Image) MyImage ;
+    }
+
+    private void eventimage(OpenFileDialog openFileDialog1, string filePath)
+    {
+        if (openFileDialog1.ShowDialog() == DialogResult.OK)
+        {
+            filePath = openFileDialog1.FileName;
+
+            ShowMyImage(filePath, 475, 496);
+        }
+    }
 
     #endregion
 }

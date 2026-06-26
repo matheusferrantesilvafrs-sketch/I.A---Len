@@ -118,18 +118,6 @@ partial class Form1
             var fileContent = string.Empty;
             var filePath = string.Empty;
 
-            TextBox textBox1 = new TextBox
-            {
-                Size = new Size(300, 300),
-                Location = new Point(370, 370),
-                Multiline = true,
-                ScrollBars = ScrollBars.Vertical
-            };
-            textBox1.BackColor = Color.FromArgb(255, 20, 24, 33);
-            ClientSize = new Size(330, 360);
-            Controls.Add(buttonevent);
-            Controls.Add(textBox1);
-
             openFileDialog1.InitialDirectory = "c:\\";
             openFileDialog1.Filter = "png files (*.png)|*.png|All files (*.*)|*.*";
             openFileDialog1.FilterIndex = 2;
@@ -139,6 +127,7 @@ partial class Form1
             {
                 
                 filePath = openFileDialog1.FileName;
+                ShowMyImage(filePath, 955, 982);
 
                
                 var fileStream = openFileDialog1.OpenFile();
@@ -149,9 +138,6 @@ partial class Form1
                 }
                 
             }
-
-            textBox1.BringToFront();
-            eventimage(openFileDialog1, filePath);
            
         };
 
@@ -169,16 +155,18 @@ partial class Form1
         MyImage = new Bitmap(fileToDisplay);
         pictureBox1.ClientSize = new Size(xSize, ySize);
         pictureBox1.Image = (Image) MyImage ;
-    }
 
-    private void eventimage(OpenFileDialog openFileDialog1, string filePath)
-    {
-        if (openFileDialog1.ShowDialog() == DialogResult.OK)
-        {
-            filePath = openFileDialog1.FileName;
+        pictureBox1.Location = new Point(10, 10);
+        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBox1.ClientSize = new Size(xSize, ySize);
+        pictureBox1.Image = Image.FromFile(fileToDisplay);
 
-            ShowMyImage(filePath, 475, 496);
-        }
+        Controls.Add(pictureBox1);
+        pictureBox1.BringToFront();
+
+        Controls.Add(pictureBox1);
+        pictureBox1.BringToFront();
+
     }
 
     #endregion
